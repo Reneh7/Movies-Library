@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require("express");
+const movie = require("./MovieData/data.json");
 const app = express();
 const movie=require("./MovieData/data.json")
 const axios=require("axios")
@@ -23,7 +24,6 @@ function moviesInfoHandler(req, res)
      this.mOverview = overview;
   }
 
- 
     const movieObj = new MoviesInfo(movie.title, movie.poster_path, movie.overview);
 
     res.json({
