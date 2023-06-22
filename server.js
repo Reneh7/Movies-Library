@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require("express");
+const movie = require("./MovieData/data.json");
 const app = express();
 app.listen(3001);
 
@@ -22,23 +23,7 @@ function moviesInfoHandler(req, res)
      this.mOverview = overview;
   }
 
-    const movie = {
-        "title": "Spider-Man: No Way Home",
-        "genre_ids": [28, 12, 878],
-        "original_language": "en",
-        "original_title": "Spider-Man: No Way Home",
-        "poster_path": "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
-        "video": false,
-        "vote_average": 8.4,
-        "overview": "Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
-        "release_date": "2021-12-15",
-        "vote_count": 3160,
-        "id": 634649,
-        "adult": false,
-        "backdrop_path": "/1Rr5SrvHxMXHu5RjKpaMba8VTzi.jpg",
-        "popularity": 10039.54,
-        "media_type": "movie"
-    };
+    
     const movieObj = new MoviesInfo(movie.title, movie.poster_path, movie.overview);
 
     res.json({
