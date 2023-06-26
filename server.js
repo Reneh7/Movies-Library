@@ -4,13 +4,19 @@ const express = require("express");
 const app = express();
 const movie=require("./MovieData/data.json")
 const axios=require("axios")
+const pg=require("pg");
 const e = express();
 require("dotenv").config();
+app.use(express.json());
 
-app.listen(3000);
+
+// app.listen(3000);
 
 const cors=require("cors");
 app.use(cors());
+
+const DB_URL = process.env.DATABASE_URL;
+const client = new pg.Client(DB_URL);
 
 app.get("/", moviesInfoHandler);
 function moviesInfoHandler(req, res) 
@@ -69,6 +75,32 @@ app.get("/tv_list", async (req,res)=>{
     console.log(list);
     res.send(list.data);
 })
+
+
+app.post("/addMovie", (req, res) => {
+  let title = req.body.t;
+  let overview = req.body.o;
+  let comments = req.body.c;
+  let year = req.body.y;
+
+  let sql = `insert into movie(title,overview,comments,year) values($1,$2,$3,$4)`;
+  client.query(sql, [title, overview, comments, year]).then(() => {
+    res.status(201).send(`movie ${title} added to database`);
+  });
+});
+
+app.get("/getMovies", (req, res) => {
+  let sql = `SELECT * FROM movie`;
+  client.query(sql).then((moviesData) => {
+    res.status(200).send(moviesData.rows);
+  });
+});
+
+client.connect().then(() => {
+  app.listen(3000, () => {
+    console.log(`Listening at 3000`);
+  });
+});
 
 app.use("/error",(req,res,next) => res.status(500).send("Sorry, something went wrong"))
 
