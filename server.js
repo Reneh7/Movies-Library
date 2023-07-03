@@ -96,6 +96,28 @@ app.get("/getMovies", (req, res) => {
   });
 });
 
+app.put("/UPDATE/:id", (req,res)=>{
+  let { newComment } = req.body;
+  let sql= `UPDATE movie SET comments=$1 WHERE id=${req.params.id}`;
+  client.query(sql, [newComment]).then(()=>{
+    res.status(200).send("Comments have been updated");
+  })
+  });
+  
+
+app.delete("/DELETE/:id", (req,res)=>{
+  let sql= `DELETE FROM movie WHERE id=${req.params.id}`;
+  client.query(sql).then(()=>{
+    res.status(200).send("Movie has been deleted");
+  });
+})
+
+app.get("/getMovie/:id", (req,res)=>{
+  let sql= `SELECT * FROM movie WHERE id=${req.params.id}`;
+  client.query(sql).then(moviesData => {
+    res.status(200).send(moviesData.rows);})
+  
+})
 client.connect().then(() => {
   app.listen(3000, () => {
     console.log(`Listening at 3000`);
