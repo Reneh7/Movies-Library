@@ -1,5 +1,6 @@
 'use strict';
 
+
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -11,6 +12,7 @@ const handle500Error = require('./Error_Handler/500');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 
 app.use(movieRoutes);
 
